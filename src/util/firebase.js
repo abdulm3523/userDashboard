@@ -34,3 +34,10 @@ export const registerWithEmail = async (username, email, password) => {
     console.log(error);
   }
 };
+
+// API_KEY = "AIzaSyBXQaA1RxZrM89eNOVXMP8vJ-26unl5E8g",
+// AUTH_DOMAIN= "idoz-8fe20.firebaseapp.com",
+// PROJECT_ID= "idoz-8fe20",
+// STORAGE_BUCKET= "idoz-8fe20.firebasestorage.app",
+// MESSAGING_SENDER_ID= "397030347733",
+// APP_ID= "1:397030347733:web:c9ae4ef429b5e02666235c"
