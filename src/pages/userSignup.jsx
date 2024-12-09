@@ -1,40 +1,52 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-export const SignupForm = () => {
-  const [user, setUser] = useState({
-    username: "",
-    email: "",
-    password: "",
-  });
+import { registerWithEmailandUser } from "../util/firebase";
 
+export const SignupForm = () => {
   const {
     register,
-    handelSubmit,
-    watch,
-    formState: { error },
+    handleSubmit,
+    reset,
+    // formState: { errors },
   } = useForm();
+  const [onSuccesM, setOnSuccesM] = useState("");
 
-  const registerFormData = (e) => {
-    e.preventDefault();
-    console.log(e);
+  const registerFormData = async (data) => {
+    // data.preventDefault();
+    console.log(data);
+    // const username = data.username;
+    const email = data.email;
+    const password = data.password;
+    setOnSuccesM("Congratulations!, SignUp Succesfull");
+    // succesMessage = <p></p>;
+    try {
+      await registerWithEmailandUser(email, password);
+    } catch (error) {
+      setOnSuccesM(error.message);
+      console.log(error.message);
+    }
+    reset();
   };
   return (
     <div className="wrapper">
       <div className="container">
         <img src="brand_logo.png" alt="" className="logo" />
-        <form action="" onSubmit={(e) => handelSubmit(registerFormData(e))}>
+        <form
+          action=""
+          onSubmit={handleSubmit((data) => registerFormData(data))}
+        >
           <h2>Sign up</h2>
           <p className="subtitle">
             Already have an account? <Link to="/login">Log in</Link>
           </p>
+          {onSuccesM && <p>{onSuccesM}</p>}
 
           <div className="username_group">
             <label htmlFor="">Username</label>
             <div className="group">
               <span>idoz.me/</span>
               <input
-                required
                 type="text"
                 placeholder=""
                 {...register("username", { required: "username is required" })}
@@ -48,6 +60,7 @@ export const SignupForm = () => {
             placeholder=""
             {...register("email", { required: "Email is required" })}
           />
+          {/* <p>{formState.errors.email}</p> */}
           <label htmlFor="#password">Password</label>
           <input
             type="password"
@@ -63,10 +76,7 @@ export const SignupForm = () => {
               and <a href="">cookie policy</a>{" "}
             </span>
           </div>
-          <button type="submit" onClick={(e) => e.preventDefault()}>
-            {" "}
-            Create account free
-          </button>
+          <button type="submit">Create account free</button>
         </form>
       </div>
     </div>
